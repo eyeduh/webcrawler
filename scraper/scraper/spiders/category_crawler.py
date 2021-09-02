@@ -11,6 +11,7 @@ class CategorySpider(scrapy.Spider):
             yield {'name' : category.css('a::text').getall(), 
                    'url' : category.css('a::attr(href)').getall(),
                               }
+    
         
 
             

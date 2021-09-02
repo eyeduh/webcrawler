@@ -1,4 +1,6 @@
 from django.db import models
+from scraper.spiders.category_crawler import CategorySpider
+from scraper.spiders.product_crawler import ProductsSpider
 
 
 # Create your models here.
@@ -26,3 +28,6 @@ class Product(models.Model):
         db_table = 'products'
         verbose_name = 'Product'
         verbose_name_plural = 'Products'
+
+category_dict = CategorySpider.__str__
+
