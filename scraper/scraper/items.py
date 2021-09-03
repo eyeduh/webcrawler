@@ -4,19 +4,26 @@
 # https://docs.scrapy.org/en/latest/topics/items.html
 
 import scrapy
+from scrapy_djangoitem import DjangoItem
+from webcrawlers.models import Category, Brand, Product
 
-class CategoryScraperItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    name = scrapy.Field(serialize=str)
+class CategoryScraperItem(DjangoItem):
+    django_model = Category
+    name = scrapy.Field()
     url = scrapy.Field()
-    
 
-class ProductScraperItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
+
+class BrandScraperItem(DjangoItem):
+    django_model = Brand
+    brand = scrapy.Field()
+    url = scrapy.Field()
+    new = scrapy.Field()
+
+
+class ProductScraperItem(DjangoItem):
+    django_model = Product
     name = scrapy.Field()
     brand = scrapy.Field()
     url = scrapy.Field()
     img = scrapy.Field()
-    price = scrapy.Field(serialize=int)
+    price = scrapy.Field()

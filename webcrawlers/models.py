@@ -1,20 +1,28 @@
 from django.db import models
-from scraper.spiders.category_crawler import CategorySpider
-from scraper.spiders.product_crawler import ProductsSpider
 
 
 # Create your models here.
 class Category(models.Model):
     name = models.CharField(verbose_name= 'Category Name', max_length=30)
     url = models.URLField(verbose_name= 'Category Link', max_length=100)
+
     class Meta:
         db_table = 'categories'
         verbose_name = 'Category'
         verbose_name_plural = 'Categories'
 
-    def __str__(self):
-        return self.name
+    
+class Brand(models.Model):
+    name = models.CharField(verbose_name= 'Brand Name', max_length=30)
+    url = models.URLField(verbose_name= 'Brand Link', max_length=100)
+    new = models.CharField(verbose_name='Is It New?', max_length=10)
 
+    class Meta:
+        db_table = 'brands'
+        verbose_name = 'Brand'
+        verbose_name_plural = 'Brands'
+
+    
 
 class Product(models.Model):
     name = models.CharField(verbose_name= 'Product Name', max_length=100)
@@ -29,5 +37,4 @@ class Product(models.Model):
         verbose_name = 'Product'
         verbose_name_plural = 'Products'
 
-category_dict = CategorySpider.__str__
 

@@ -1,33 +1,42 @@
+from os import name
+from urllib import parse
 import scrapy
+from scrapy.spiders import CrawlSpider, Rule
+from scrapy.linkextractors import LinkExtractor
 
-class ProductsSpider(scrapy.Spider):
+from ..items import ProductScraperItem
+
+class ProductsSpider(CrawlSpider):
     name = 'products'
 
     start_urls = ['http://www.sephora.com/brands-list']
 
-    def parse(self, response):
-        for brand in response.xpath('//a[@data-at="brand_link"]'):
-            yield {
-                'brand' : brand.css('a::text').get(),
-                'brand url' : 'http://www.sephora.com' + brand.xpath('//a/@href').get(),
-                'new' : brand.xpath('//span[@data-comp="Flag"]/text()').get(default='No'),
-            }
-
-
-            brand_urls = response.xpath('//a[@data-at="brand_link"]/@href')
-            yield from response.follow_all(brand_urls, callback=self.parse_products)
-
+    le1 = LinkExtractor()
 
     
-    def parse_products(self, response):
-        def extract_with_xpath(query):
-            return response.xpath(query).get(default='').strip()
+    def parse(self, response):
+
+        links = self.le1.extract_links(response)
+      
+        for link in links:
+            yield scrapy.Request(link.url, callback=self.parse)
+        
+        for product in response.css('a.css-ix8km1'):
             
-        yield {
-            'name' : extract_with_xpath('//span[@data-at="sku_item_name"]/text()'),
-            'brand' : extract_with_xpath('//span[@data-at="sku_item_brand"]/text()'),
-            'url' : extract_with_xpath('//a[@data-comp="ProductItem "]/@href'),
-            'img' : extract_with_xpath(('//img/@src')),
-            'price' : extract_with_xpath('//span[@data-at="sku_item_price_list"]/text()'),
-            # 'Product Rating' : extract_with_xpath('//div[@data-comp="StarRating"]/@aria-label'),
-                }
+            name = product.xpath('.//span[@data-at="sku_item_name"]/text()').get()
+            brand = product.xpath('.//span[@data-at="sku_item_brand"]/text()').get()
+            url =  product.xpath('./@href').get()
+            img = 'http://www.sephora.com' + product.xpath(('.//img/@src')).get()
+            price = product.xpath('.//span[@data-at="sku_item_price_list"]/text()').get()
+            # 'Product Rating' : extract_with_xpath('//div[@data-comp="StarRating"]/@aria-label')
+            
+            products = ProductScraperItem()
+
+            products['name'] = name
+            products['url'] = url
+            products['brand'] = brand
+            products['img'] = img
+            products['price'] = price
+
+            yield products
+        

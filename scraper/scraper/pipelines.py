@@ -6,8 +6,21 @@
 
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
+from webcrawlers.models import Category, Brand, Product
+from .items import CategoryScraperItem, BrandScraperItem, ProductScraperItem
 
 
-class ScraperPipeline:
+class CategoryPipeline():
     def process_item(self, item, spider):
+        item.save()
+        return item
+
+class BrandPipeline():
+    def process_item(self, item, spider):
+        item.save()
+        return item
+
+class ProductPipeline():
+    def process_item(self, item, spider):
+        item.save()
         return item
