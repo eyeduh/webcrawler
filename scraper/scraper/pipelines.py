@@ -6,8 +6,6 @@
 
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
-from webcrawlers.models import Category, Brand, Product
-from .items import CategoryScraperItem, BrandScraperItem, ProductScraperItem
 
 
 class CategoryPipeline():

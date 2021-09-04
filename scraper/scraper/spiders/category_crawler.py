@@ -1,3 +1,4 @@
+from webcrawlers.models import Category
 import scrapy
 
 from ..items import CategoryScraperItem
@@ -11,16 +12,19 @@ class CategorySpider(scrapy.Spider):
     def parse(self, response):
         for category in response.css('a.css-hzvn5z'):
             name = category.css('a::text').extract()[0]
-            url = category.css('a::attr(href)').extract()[0]
+            url = 'http://www.sephora.com' + category.css('a::attr(href)').extract()[0]
         
             categories = CategoryScraperItem()
 
             categories['name'] = name
             categories['url'] = url
 
+            category_objects = Category.objects.create(**categories)
+
             yield categories
 
-            next_page = 'http://www.sephora.com' + url
+            next_page = url
             yield response.follow(next_page, callback=self.parse)
+        
 
             

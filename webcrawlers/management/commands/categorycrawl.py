@@ -1,5 +1,3 @@
-from scraper.scraper.spiders.product_crawler import ProductsSpider
-from scraper.scraper.spiders.brand_crawler import BrandsSpider
 from django.core.management.base import BaseCommand
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings

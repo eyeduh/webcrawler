@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'webcrawlers.apps.WebcrawlersConfig',
-    'webcrawlers.apps.ScraperConfig'
+    'webcrawlers.apps.ScraperConfig',
+    'users.apps.UsersConfig'
 ]
 
 MIDDLEWARE = [
