@@ -18,7 +18,7 @@ class Category(models.Model):
     
 class Brand(models.Model):
     name = models.CharField(verbose_name= 'Brand Name', max_length=200)
-    url = models.URLField(verbose_name= 'Brand Link', max_length=100)
+    url = models.CharField(verbose_name= 'Brand Link', max_length=100)
     new = models.CharField(verbose_name='Is It New?', max_length=10)
 
     class Meta:
@@ -27,23 +27,22 @@ class Brand(models.Model):
         verbose_name_plural = 'Brands'
         unique_together = ['name', 'url', 'new']
 
-        def __unicode__(self):
-            return self.url
+    def __unicode__(self):
+        return self.url
     
 
 
 class Product(models.Model):
     name = models.CharField(verbose_name= 'Product Name', max_length=100)
     brand = models.CharField(verbose_name= 'Product Brand', max_length=50)
-    url = models.URLField(verbose_name= 'Product URL', max_length=100)
+    url = models.URLField(verbose_name= 'Product URL', max_length=200)
     img = models.URLField(verbose_name= 'Product Image', max_length=200)
-    price = models.IntegerField(verbose_name= 'Product Price', help_text='In Dollars')
+    price = models.CharField(verbose_name= 'Product Price', help_text='In Dollars', max_length=50)
     
 
     class Meta: 
         db_table = 'products'
         verbose_name = 'Product'
         verbose_name_plural = 'Products'
-        unique_together = ['name', 'url']
 
 
