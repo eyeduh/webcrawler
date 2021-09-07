@@ -27,8 +27,8 @@ class Brand(models.Model):
         verbose_name_plural = 'Brands'
         unique_together = ['name', 'url', 'new']
 
-    def __unicode__(self):
-        return self.url
+    def __str__(self):
+        return self.name
     
 
 
