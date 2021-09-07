@@ -3,6 +3,7 @@ from .models import Profile
 from django.contrib.auth import login, authenticate
 from django.contrib import messages
 from .forms import SignUpForm
+from django.contrib.auth.forms import AuthenticationForm
 
 # Create your views here.
 def user_list(request):
@@ -39,3 +40,22 @@ def register_request(request):
         messages.error(request, "Unsuccessful Registration. Invalid Information.")
         form = SignUpForm()
     return render(request, 'users/register.html', context={'form':form})
+
+
+def login_request(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                messages.info(request, f"You are now logged in as {username}.")
+                return redirect('/')
+            else: 
+                messages.error(request, "Invalid username or password.")
+        else:
+            messages.error(request, "Invalid username or password.")
+    form = AuthenticationForm()
+    return render(request, 'users/login.html', context={'form':form})
